@@ -5,15 +5,21 @@
 var childProcess = require('child_process');
 
 exports.psc = function(files) {
-  return function(k) {
-    return function() {
-      var child = childProcess.spawn("psc", files);
+  return function(ks) {
+    return function(kf) {
+      return function() {
+        var child = childProcess.spawn("psc", files);
 
-      child.stderr.pipe(process.stdout);
+        child.stderr.pipe(process.stdout);
 
-      child.on('close', function() {
-        k();
-      });
+        child.on('close', function(code) {
+          if (code === 0) {
+            ks();
+          } else {
+            kf();
+          }
+        });
+      };
     };
   };
 };

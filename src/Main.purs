@@ -16,7 +16,7 @@ import Node.ReadLine
 
 foreign import data PROCESS :: !
 
-foreign import psc :: forall a eff. Array String -> Eff (process :: PROCESS | eff) a -> Eff (process :: PROCESS | eff) Unit
+foreign import psc :: forall a b eff. Array String -> Eff (process :: PROCESS | eff) a -> Eff (process :: PROCESS | eff) b -> Eff (process :: PROCESS | eff) Unit
 
 foreign import execModule :: forall a eff. String -> Eff (process :: PROCESS | eff) a -> Eff (process :: PROCESS | eff) Unit
 
@@ -60,6 +60,7 @@ main = void do
             psc [ "./bower_components/purescript-*/src/**/*.*", "./src/**/*.*", ".psci.purs" ] do
                 execModule "PSCI.Main" do
                   prompt interface
+              $ prompt interface
 
   setPrompt "> " 2 interface
   prompt interface
